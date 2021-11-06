@@ -1,4 +1,5 @@
 const { param } = require("../server");
+const Users = require('../users/users-model')
 
 function logger(req, res, next) {
   // DO YOUR MAGIC
@@ -8,16 +9,46 @@ function logger(req, res, next) {
 
 function validateUserId(req, res, next) {
   // DO YOUR MAGIC
-  const id = param.id;
-  if(req.id == id){
-    res.send(req.user);
+  try {
+    const user = await Users.getById(req.param.id);
+    if(!user){
+      res.status(404).json({
+        message: "User not found"
+      })
+    } else{
+      req.user = user;
+    }
+  }
+  catch (err){
+    res.status(500).json({
+      message: "500 error"
+    })
+  }
+  if(!req.name || !req.name == ""){
+    res.status(400).json({ message: "missing required name field" });
+    next();
   } else{
-    res.status(404).json({ message: "missing required name field" });
+    console.log('File sent successfully');
   }
 }
 
-function validateUser(req, res, next) {
+async function validateUser(req, res, next) {
   // DO YOUR MAGIC
+  try {
+    const user = await Users.getById(req.param.id);
+    if(!user){
+      res.status(404).json({
+        message: "User not found"
+      })
+    } else{
+      req.user = user;
+    }
+  }
+  catch (err){
+    res.status(500).json({
+      message: "500 error"
+    })
+  }
   if(!req.name || !req.name == ""){
     res.status(400).json({ message: "missing required name field" });
     next();
