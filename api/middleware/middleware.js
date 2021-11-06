@@ -2,7 +2,7 @@ const { param } = require("../server");
 
 function logger(req, res, next) {
   // DO YOUR MAGIC
-  console.log(req.method, req.url);
+  console.log(new Date().toLocaleString,req.method, req.originalUrl);
   next();
 }
 
@@ -37,3 +37,4 @@ function validatePost(req, res, next) {
 }
 
 // do not forget to expose these functions to other modules
+module.exports = { logger, validateUserId, validateUser, validatePost };
