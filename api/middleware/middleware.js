@@ -13,7 +13,7 @@ function validateUserId(req, res, next) {
     const user = await Users.getById(req.param.id);
     if(!user){
       res.status(404).json({
-        message: "User not found"
+        message: "not found"
       })
     } else{
       req.user = user;
@@ -34,36 +34,27 @@ function validateUserId(req, res, next) {
 
 async function validateUser(req, res, next) {
   // DO YOUR MAGIC
-  try {
-    const user = await Users.getById(req.param.id);
-    if(!user){
-      res.status(404).json({
-        message: "User not found"
-      })
-    } else{
-      req.user = user;
-    }
-  }
-  catch (err){
-    res.status(500).json({
-      message: "500 error"
+  const { name } = req.body;
+  if(!name){
+    res.status(400).json({
+      message: "user not found"
     })
-  }
-  if(!req.name || !req.name == ""){
-    res.status(400).json({ message: "missing required name field" });
-    next();
   } else{
-    console.log('File sent successfully');
+    req.name = name.trim();
+    next();
   }
 }
 
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
-  if(!req.text || !req.text == ""){
-    res.status(400).json({ message: "missing required text field" });
-    next();
+  const { text } = req.body;
+  if(!text){
+    res.status(400).json({
+      message: "user not found"
+    })
   } else{
-    console.log('File sent successfully');
+    req.text = text.trim();
+    next()
   }
 }
 
